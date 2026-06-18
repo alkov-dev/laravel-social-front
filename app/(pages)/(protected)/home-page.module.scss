@@ -1,0 +1,53 @@
+.container {
+  min-height: calc(100vh - 60px);
+  padding: var(--mantine-spacing-xl);
+  background-color: var(--mantine-color-gray-0);
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcomeCard {
+  padding: var(--mantine-spacing-xl);
+  background-color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-lg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: var(--mantine-spacing-xl);
+}
+
+.title {
+  color: var(--mantine-color-dark-7);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.text {
+  color: var(--mantine-color-gray-7);
+  line-height: 1.6;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--mantine-spacing-lg);
+  margin-top: var(--mantine-spacing-xl);
+}
+
+.featureCard {
+  padding: var(--mantine-spacing-lg);
+  background-color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.featureTitle {
+  color: var(--mantine-color-indigo-6);
+  margin-bottom: var(--mantine-spacing-sm);
+}

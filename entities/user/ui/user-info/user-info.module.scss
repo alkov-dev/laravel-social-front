@@ -1,0 +1,22 @@
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-md);
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.userName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--mantine-color-dark-7);
+}
+
+.userEmail {
+  font-size: 0.75rem;
+  color: var(--mantine-color-gray-6);
+}
