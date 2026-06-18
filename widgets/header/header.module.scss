@@ -1,0 +1,22 @@
+.header {
+  background-color: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  padding: 0 var(--mantine-spacing-md);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mantine-color-indigo-6);
+  text-decoration: none;
+}
+
+.authButtons {
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+}
