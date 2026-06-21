@@ -1,5 +1,5 @@
 import { Group, Text } from '@mantine/core';
-import { User } from '@/shared/api/types/mock-users-api';
+import { User } from '@/shared/api/types/initial_schema';
 import { UserAvatar } from '@/entities/user';
 import classes from './user-info.module.scss';
 

@@ -1,0 +1,11 @@
+.comment {
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 191, 255, 0.1);
+  }
+}
+
+.nested {
+  border-left: 3px solid var(--mantine-color-cyan-3);
+}

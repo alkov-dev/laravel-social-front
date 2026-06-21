@@ -63,7 +63,7 @@ export function LoginForm() {
                     email: values.email,
                     password: values.password,
                 },
-                url: '/api/login',
+                url: '/login',
             });
         } catch (error) {
             console.error('Ошибка входа:', error);

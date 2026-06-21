@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { ProviderWrapper } from './providers/providers';
+import { ColorSchemeScript } from '@mantine/core';
 
 export const metadata: Metadata = {
-  title: 'My App - FSD',
-  description: 'Next.js + Mantine UI + Zustand + FSD',
+  title: 'Social Network',
+  description: 'Социальная сеть с постами',
 };
+
 
 export default function RootLayout({
   children,
@@ -12,7 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        <ColorSchemeScript defaultColorScheme='light' />
+      </head>
       <body>
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>

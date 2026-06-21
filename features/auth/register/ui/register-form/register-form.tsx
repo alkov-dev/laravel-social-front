@@ -69,7 +69,7 @@ export function RegisterForm() {
                 password: values.password,
                 password_confirmation: values.confirmPassword
             },
-            url: '/api/register'
+            url: '/register'
         });
         setLoading(false);
     };

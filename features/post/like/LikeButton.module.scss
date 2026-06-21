@@ -1,0 +1,7 @@
+.button {
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(1.2);
+  }
+}

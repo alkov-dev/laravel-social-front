@@ -8,11 +8,11 @@ export enum ContentType {
     Text = "text/plain",
 }
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+const apiBaseUrl = 'http://localhost:8000/api';
 
 const httpClient = axios.create({
     baseURL: apiBaseUrl,
-    withCredentials: true,
+    withCredentials: false,
     xsrfCookieName: 'XSRF-TOKEN',
     xsrfHeaderName: 'X-XSRF-TOKEN',
     headers: {
