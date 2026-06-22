@@ -30,7 +30,8 @@ export function CommentItem({ comment, postId, currentUserId, depth = 0 }: Comme
     const [showReplyForm, setShowReplyForm] = useState(false);
     const deleteComment = useDeleteComment();
 
-    const isOwner = currentUserId === comment.user_id;
+    const isOwner = currentUserId === comment.user?.id;
+
     const maxDepth = 2;
     const isNested = depth > 0;
 
@@ -57,19 +58,22 @@ export function CommentItem({ comment, postId, currentUserId, depth = 0 }: Comme
                     </Group>
 
                     <Group gap="xs">
-                        <Button
-                            variant="subtle"
-                            size="compact-xs"
-                            color="cyan"
-                            onClick={() => setShowReplyForm(!showReplyForm)}
-                            leftSection={<IconMessageCircle size={14} />}
-                        >
-                            Ответить
-                        </Button>
+                        {!isOwner && (
+                            <Button
+                                variant="subtle"
+                                size="compact-xs"
+                                color="violet"
+                                onClick={() => setShowReplyForm(!showReplyForm)}
+                                leftSection={<IconMessageCircle size={14} />}
+                            >
+                                Ответить
+                            </Button>
+                        )}
+
 
                         {isOwner && (
                             <>
-                                <ActionIcon variant="light" color="cyan" size="sm">
+                                <ActionIcon variant="light" color="violet" size="sm">
                                     <IconEdit size={14} />
                                 </ActionIcon>
                                 <ActionIcon

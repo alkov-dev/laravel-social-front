@@ -13,7 +13,7 @@ export function AppAvatar({ name, src, ...props }: AppAvatarProps) {
             src={src}
             alt={name || 'User'}
             radius="xl"
-            color="cyan"
+            color="violet"
             {...props}
         >
             {!src && <IconUser size={20} />}

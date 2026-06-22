@@ -19,24 +19,27 @@ export function CategoryFilter({ value, onChange, className }: CategoryFilterPro
         <ScrollArea className={className}>
             <Group gap="xs" wrap="nowrap">
                 <Chip
+                    checked={value === undefined}
                     variant={value === undefined ? 'filled' : 'light'}
-                    color="cyan"
+                    color="violet"
                     onClick={() => onChange(undefined)}
                 >
                     Все
                 </Chip>
 
-                {categories.map((category) => (
-                    <Chip
+                {categories.map((category) => {
+                    const isSelected = value === Number(category.id);
+                    return <Chip
                         key={category.id}
+                        checked={isSelected}
                         variant={value === category.id ? 'filled' : 'light'}
-                        color="cyan"
-                        onClick={() => onChange(category.id === value ? undefined : category.id)}
+                        color="violet"
+                        onChange={() => onChange(isSelected ? undefined : Number(category.id))}
                     >
                         {category.icon && <span style={{ marginRight: 4 }}>{category.icon}</span>}
                         {category.name}
-                    </Chip>
-                ))}
+                    </Chip>;
+                })}
             </Group>
         </ScrollArea>
     );

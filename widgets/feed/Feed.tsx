@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Stack, Pagination, Title } from '@mantine/core';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { usePosts } from '@/entities/post/api/usePost';
 import { PostCard } from '@/widgets/post-card/PostCard';
 import { CategoryFilter } from '@/features/post/category-filter/CategoryFilter';
@@ -12,6 +12,7 @@ import { EmptyState } from '@/shared/ui/EmptyState/EmptyState';
 export function Feed() {
     const [page, setPage] = useState(1);
     const [categoryId, setCategoryId] = useState<number | undefined>();
+    console.log("🚀 ~ categoryId:", categoryId);
 
     const { data, isLoading, error, refetch } = usePosts({
         page,
@@ -27,11 +28,10 @@ export function Feed() {
 
     return (
         <Container size="md" py="xl">
-            <Title order={1} mb="xl" ta="center">
-                Лента постов
-            </Title>
 
-            <CategoryFilter value={categoryId} onChange={setCategoryId} mb="xl" />
+            <div style={{ marginBottom: 'var(--mantine-spacing-xl)' }}>
+                <CategoryFilter value={categoryId} onChange={setCategoryId} />
+            </div>
 
             {!data?.data || data.data.length === 0 ? (
                 <EmptyState
@@ -52,7 +52,7 @@ export function Feed() {
                     onChange={setPage}
                     total={data.meta.last_page}
                     mt="xl"
-                    color="cyan"
+                    color="violet"
                     withEdges
                 />
             )}

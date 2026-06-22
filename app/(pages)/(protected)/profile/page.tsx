@@ -65,7 +65,7 @@ export default function ProfilePage() {
             notifications.show({
                 title: 'Успех',
                 message: 'Профиль обновлён',
-                color: 'cyan',
+                color: 'violet',
             });
         } catch {
             notifications.show({
@@ -90,7 +90,7 @@ export default function ProfilePage() {
                             src={user.avatar}
                             size={120}
                             radius="xl"
-                            color="cyan"
+                            color="violet"
                             className={classes.avatar}
                         >
                             {!user.avatar && <IconCamera size={40} />}
@@ -99,7 +99,7 @@ export default function ProfilePage() {
                         <Stack gap="xs" style={{ flex: 1 }}>
                             <Title order={2}>{user.name}</Title>
                             <Text c="dimmed">{user.email}</Text>
-                            {user.city && <Badge color="cyan" variant="light">{user.city}</Badge>}
+                            {user.city && <Badge color="violet" variant="light">{user.city}</Badge>}
                             <Text size="sm" c="dimmed">
                                 Регистрация: {formatDate(user.created_at)}
                             </Text>
@@ -152,7 +152,7 @@ export default function ProfilePage() {
 
                             <Button
                                 type="submit"
-                                color="cyan"
+                                color="violet"
                                 loading={updateProfile.isPending}
                                 leftSection={<IconGavel size={16} />}
                             >

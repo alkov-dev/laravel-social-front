@@ -40,7 +40,7 @@ export default function UserProfilePage() {
                         src={user.avatar}
                         size={120}
                         radius="xl"
-                        color="cyan"
+                        color="violet"
                         className={classes.avatar}
                     />
 
@@ -55,9 +55,9 @@ export default function UserProfilePage() {
                         )}
 
                         <Group gap="sm" mt="sm">
-                            {user.city && <Badge color="cyan" variant="light">{user.city}</Badge>}
+                            {user.city && <Badge color="violet" variant="light">{user.city}</Badge>}
                             {user.birth_date && (
-                                <Badge color="cyan" variant="light">
+                                <Badge color="violet" variant="light">
                                     {formatDate(user.birth_date)}
                                 </Badge>
                             )}

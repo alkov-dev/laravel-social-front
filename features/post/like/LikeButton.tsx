@@ -19,7 +19,7 @@ export function LikeButton({ postId, isLiked, likesCount }: LikeButtonProps) {
         <Group gap="xs">
             <ActionIcon
                 variant={isLiked ? 'filled' : 'light'}
-                color="cyan"
+                color="violet"
                 onClick={() => toggleLike()}
                 loading={isPending}
                 aria-label="Like"

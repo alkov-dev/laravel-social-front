@@ -15,7 +15,7 @@ export function EmptyState({
     return (
         <Center py="xl">
             <Stack align="center" gap="md">
-                {icon || <IconInbox size={64} stroke={1.5} color="var(--mantine-color-cyan-5)" />}
+                {icon || <IconInbox size={64} stroke={1.5} color="var(--mantine-color-violet-5)" />}
                 <Text size="lg" fw={500} ta="center">
                     {title}
                 </Text>

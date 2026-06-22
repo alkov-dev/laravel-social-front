@@ -58,7 +58,7 @@ export default function PostPage() {
                         </Group>
 
                         {post.category && (
-                            <Badge color="cyan" variant="light" leftSection={post.category.icon}>
+                            <Badge color="violet" variant="light" leftSection={post.category.icon}>
                                 {post.category.name}
                             </Badge>
                         )}

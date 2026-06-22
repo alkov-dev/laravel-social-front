@@ -9,15 +9,20 @@ import {
     Badge,
     Stack,
     Modal,
+    Menu,
+    Button,
 } from '@mantine/core';
-import { IconMessageCircle, IconShare } from '@tabler/icons-react';
+import { IconDots, IconEdit, IconMessageCircle, IconShare, IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LikeButton } from '@/features/post/like/LikeButton';
 import { AppAvatar } from '@/shared/ui/Avatar/Avatar';
-import { formatDistanceToNow, formatNumber } from '@/shared/lib/format';
+import { formatDistanceToNow, formatNumber, getFullImageUrl } from '@/shared/lib/format';
 import type { Post } from '@/shared/api/types/initial_schema';
 import classes from './PostCard.module.scss';
+import { useDeletePost } from '@/entities/post/api/usePost';
+import { useProfile } from '@/entities/user/api/useProfile';
+import { notifications } from '@mantine/notifications';
 
 interface PostCardProps {
     post: Post;
@@ -26,6 +31,32 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
     const router = useRouter();
     const [fullImage, setFullImage] = useState<string | null>(null);
+    const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+
+    const deletePost = useDeletePost();
+
+    const { data: currentUser } = useProfile();
+
+    // Проверяем, является ли текущий пользователь автором
+    const isOwner = currentUser?.id === post.user?.id;
+
+    const handleDelete = async () => {
+        try {
+            await deletePost.mutateAsync(post.id);
+            notifications.show({
+                title: 'Успех',
+                message: 'Пост удалён',
+                color: 'violet',
+            });
+            setDeleteModalOpened(false);
+        } catch (error: any) {
+            notifications.show({
+                title: 'Ошибка',
+                message: error.response?.data?.message || 'Не удалось удалить пост',
+                color: 'red',
+            });
+        }
+    };
 
     return (
         <>
@@ -44,7 +75,7 @@ export function PostCard({ post }: PostCardProps) {
 
                 <Card.Section withBorder inheritPadding py="xs">
                     <Group justify="space-between">
-                        <Group gap="sm" onClick={() => router.push(`/users/${post.user_id}`)} style={{ cursor: 'pointer' }}>
+                        <Group gap="sm" onClick={() => router.push(`/users/${post.user?.id}`)} style={{ cursor: 'pointer' }}>
                             <AppAvatar src={post.user?.avatar} name={post.user?.name} size="md" />
                             <div>
                                 <Text size="sm" fw={500}>
@@ -56,15 +87,43 @@ export function PostCard({ post }: PostCardProps) {
                             </div>
                         </Group>
 
-                        {post.category && (
-                            <Badge
-                                color="cyan"
-                                variant="light"
-                                leftSection={post.category.icon}
-                            >
-                                {post.category.name}
-                            </Badge>
-                        )}
+                        <Group gap="xl">
+                            {post.category && (
+                                <Badge
+                                    color="violet"
+                                    variant="light"
+                                    leftSection={post.category.icon}
+                                >
+                                    {post.category.name}
+                                </Badge>
+                            )}
+
+                            {isOwner && (
+                                <Menu shadow="md" width={200} position="bottom-end">
+                                    <Menu.Target>
+                                        <ActionIcon variant="subtle" color="gray" aria-label="Меню">
+                                            <IconDots size={16} />
+                                        </ActionIcon>
+                                    </Menu.Target>
+
+                                    <Menu.Dropdown>
+                                        <Menu.Item
+                                            leftSection={<IconEdit size={14} />}
+                                            onClick={() => router.push(`/posts/${post.id}/edit`)}
+                                        >
+                                            Редактировать
+                                        </Menu.Item>
+                                        <Menu.Item
+                                            leftSection={<IconTrash size={14} />}
+                                            color="red"
+                                            onClick={() => setDeleteModalOpened(true)}
+                                        >
+                                            Удалить
+                                        </Menu.Item>
+                                    </Menu.Dropdown>
+                                </Menu>
+                            )}
+                        </Group>
                     </Group>
                 </Card.Section>
 
@@ -90,19 +149,48 @@ export function PostCard({ post }: PostCardProps) {
                             />
 
                             <Group gap="xs">
-                                <ActionIcon variant="light" color="cyan" aria-label="Comment">
+                                <ActionIcon variant="light" color="violet" aria-label="Comment">
                                     <IconMessageCircle size={18} />
                                 </ActionIcon>
                                 <Text size="sm">{formatNumber(post.comments_count)}</Text>
                             </Group>
 
-                            <ActionIcon variant="light" color="cyan" aria-label="Share">
+                            <ActionIcon variant="light" color="violet" aria-label="Share">
                                 <IconShare size={18} />
                             </ActionIcon>
                         </Group>
                     </Group>
                 </Card.Section>
             </Card>
+
+            {/* Модальное окно подтверждения удаления */}
+            <Modal
+                opened={deleteModalOpened}
+                onClose={() => setDeleteModalOpened(false)}
+                title="Удалить пост?"
+                centered
+            >
+                <Text size="sm" mb="lg">
+                    Вы уверены, что хотите удалить этот пост? Это действие нельзя отменить.
+                </Text>
+                <Group justify="flex-end" gap="sm">
+                    <Button
+                        variant="default"
+                        onClick={() => setDeleteModalOpened(false)}
+                        disabled={deletePost.isPending}
+                    >
+                        Отмена
+                    </Button>
+                    <Button
+                        color="red"
+                        onClick={handleDelete}
+                        loading={deletePost.isPending}
+                        leftSection={<IconTrash size={14} />}
+                    >
+                        Удалить
+                    </Button>
+                </Group>
+            </Modal>
 
             <Modal
                 opened={!!fullImage}

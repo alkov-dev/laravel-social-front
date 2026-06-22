@@ -51,7 +51,7 @@ export function CommentForm({ postId, parentId, onSuccess, placeholder }: Commen
             <Group justify="flex-end" mt="sm">
                 <Button
                     type="submit"
-                    color="cyan"
+                    color="violet"
                     size="sm"
                     loading={createComment.isPending}
                     leftSection={<IconSend size={14} />}

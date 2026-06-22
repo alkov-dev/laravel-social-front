@@ -23,7 +23,7 @@ export function ErrorState({
                     {description}
                 </Text>
                 {onRetry && (
-                    <Button color="cyan" variant="light" onClick={onRetry}>
+                    <Button color="violet" variant="light" onClick={onRetry}>
                         Попробовать снова
                     </Button>
                 )}

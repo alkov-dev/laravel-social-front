@@ -9,7 +9,7 @@ export function Loading({ text = 'Загрузка...', size = 'xl' }: LoadingPr
     return (
         <Center py="xl">
             <Stack align="center" gap="md">
-                <Loader size={size} color="cyan" type="dots" />
+                <Loader size={size} color="violet" type="dots" />
                 <Text size="sm" c="dimmed">
                     {text}
                 </Text>

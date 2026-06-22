@@ -83,7 +83,7 @@ export function CreatePostForm() {
             notifications.show({
                 title: 'Успех',
                 message: 'Пост успешно создан',
-                color: 'cyan',
+                color: 'violet',
             });
             router.push('/');
         } catch {
@@ -170,7 +170,7 @@ export function CreatePostForm() {
                     <Group justify="flex-end" mt="md">
                         <Button
                             type="submit"
-                            color="cyan"
+                            color="violet"
                             loading={createPost.isPending}
                             leftSection={<IconSend size={16} />}
                         >

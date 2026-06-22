@@ -30,7 +30,7 @@ export default function SettingsPage() {
                 {/* Уведомления */}
                 <Paper p="xl" radius="md" withBorder>
                     <Group mb="md">
-                        <IconBell size={24} color="var(--mantine-color-cyan-5)" />
+                        <IconBell size={24} color="var(--mantine-color-violet-5)" />
                         <Title order={3}>Уведомления</Title>
                     </Group>
 
@@ -43,7 +43,7 @@ export default function SettingsPage() {
                                 </Text>
                             </div>
                             <Switch
-                                color="cyan"
+                                color="violet"
                                 checked={notificationsEnabled}
                                 onChange={(event) => setNotificationsEnabled(event.currentTarget.checked)}
                             />
@@ -59,7 +59,7 @@ export default function SettingsPage() {
                                 </Text>
                             </div>
                             <Switch
-                                color="cyan"
+                                color="violet"
                                 checked={emailNotifications}
                                 onChange={(event) => setEmailNotifications(event.currentTarget.checked)}
                             />
@@ -70,7 +70,7 @@ export default function SettingsPage() {
                 {/* Внешний вид */}
                 <Paper p="xl" radius="md" withBorder>
                     <Group mb="md">
-                        <IconPalette size={24} color="var(--mantine-color-cyan-5)" />
+                        <IconPalette size={24} color="var(--mantine-color-violet-5)" />
                         <Title order={3}>Внешний вид</Title>
                     </Group>
 
@@ -82,7 +82,7 @@ export default function SettingsPage() {
                             </Text>
                         </div>
                         <Switch
-                            color="cyan"
+                            color="violet"
                             checked={darkMode}
                             onChange={(event) => setDarkMode(event.currentTarget.checked)}
                         />
@@ -92,27 +92,27 @@ export default function SettingsPage() {
                 {/* Безопасность */}
                 <Paper p="xl" radius="md" withBorder>
                     <Group mb="md">
-                        <IconShield size={24} color="var(--mantine-color-cyan-5)" />
+                        <IconShield size={24} color="var(--mantine-color-violet-5)" />
                         <Title order={3}>Безопасность</Title>
                     </Group>
 
                     <Stack gap="md">
-                        <Button variant="light" color="cyan">
+                        <Button variant="light" color="violet">
                             Изменить пароль
                         </Button>
-                        <Button variant="light" color="cyan">
+                        <Button variant="light" color="violet">
                             Двухфакторная аутентификация
                         </Button>
                     </Stack>
                 </Paper>
 
                 <Button
-                    color="cyan"
+                    color="violet"
                     onClick={() =>
                         notifications.show({
                             title: 'Успех',
                             message: 'Настройки сохранены',
-                            color: 'cyan',
+                            color: 'violet',
                         })
                     }
                 >

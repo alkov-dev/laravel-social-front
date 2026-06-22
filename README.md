@@ -25,26 +25,26 @@ npm install -D sass
 npm install postcss postcss-preset-mantine postcss-simple-vars
 
 -------------------------------
-2️⃣ Настройка Mantine с Cyan темой
+2️⃣ Настройка Mantine с violet темой
 src/shared/config/mantine.ts
 
 
 import { createTheme } from '@mantine/core';
 
 export const mantineTheme = createTheme({
-  primaryColor: 'cyan',
+  primaryColor: 'grape',
   colors: {
-    cyan: [
-      '#e0f7ff',
-      '#b3ecff',
-      '#80dfff',
-      '#4dd2ff',
-      '#26c6ff',
-      '#00bfff',
-      '#00a8e6',
-      '#0091cc',
-      '#007ab3',
-      '#006399',
+    violet: [
+      '#f3f0ff', // violet-0
+      '#e5dbff', // violet-1
+      '#d0bfff', // violet-2
+      '#b197fc', // violet-3
+      '#9775fa', // violet-4
+      '#845ef7', // violet-5
+      '#7950f2', // violet-6
+      '#7048e8', // violet-7
+      '#6741d9', // violet-8
+      '#5f3dc4', // violet-9
     ],
   },
   fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
@@ -163,27 +163,28 @@ dayjs.extend(relativeTime);
 dayjs.locale('ru');
 
 export function formatDistanceToNow(date: string): string {
-  return dayjs(date).fromNow();
+    return dayjs(date).fromNow();
 }
 
 export function formatDate(date: string): string {
-  return dayjs(date).format('DD.MM.YYYY');
+    return dayjs(date).format('DD.MM.YYYY');
 }
 
 export function formatDateTime(date: string): string {
-  return dayjs(date).format('DD.MM.YYYY HH:mm');
+    return dayjs(date).format('DD.MM.YYYY HH:mm');
 }
 
 export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
 }
 
 export function formatNumber(num: number): string {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return num.toString();
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
 }
+
 
 
 
@@ -436,141 +437,6 @@ export function useToggleLike(postId: number) {
 }
 
 
-
-
-
-7️ UI компоненты
-src/widgets/post-card/PostCard.tsx
--------------------------------
-'use client';
-
-import {
-  Card,
-  Image,
-  Text,
-  Group,
-  Avatar,
-  ActionIcon,
-  Badge,
-  Stack,
-} from '@mantine/core';
-import { IconHeart, IconMessageCircle, IconShare } from '@tabler/icons-react';
-import { useToggleLike } from '@/entities/post/api/usePosts';
-import { formatDistanceToNow } from '@/shared/lib/format';
-import classes from './PostCard.module.scss';
-import type { Post } from '@/shared/types/schema';
-
-interface PostCardProps {
-  post: Post;
-}
-
-export function PostCard({ post }: PostCardProps) {
-  const { mutate: toggleLike } = useToggleLike(post.id);
-
-  return (
-    <Card className={classes.card} shadow="sm" padding="lg">
-      {post.preview_image && (
-        <Image
-          src={post.preview_image.preview_url}
-          alt={post.preview_image.alt_text || post.title}
-          height={300}
-          fit="cover"
-          radius="md"
-          className={classes.image}
-        />
-      )}
-
-      <Card.Section withBorder inheritPadding py="xs">
-        <Group justify="space-between">
-          <Group gap="sm">
-            <Avatar
-              src={post.user?.avatar}
-              alt={post.user?.name}
-              radius="xl"
-              size="md"
-            />
-            <div>
-              <Text size="sm" fw={500}>
-                {post.user?.name}
-              </Text>
-              <Text size="xs" c="dimmed">
-                {formatDistanceToNow(post.published_at || post.created_at)}
-              </Text>
-            </div>
-          </Group>
-
-          {post.category && (
-            <Badge
-              color={post.category.color}
-              variant="light"
-              leftSection={post.category.icon}
-            >
-              {post.category.name}
-            </Badge>
-          )}
-        </Group>
-      </Card.Section>
-
-      <Stack gap="xs" mt="md">
-        <Text size="lg" fw={600}>
-          {post.title}
-        </Text>
-
-        {post.content && (
-          <Text size="sm" c="dimmed" lineClamp={3}>
-            {post.content}
-          </Text>
-        )}
-      </Stack>
-
-      <Card.Section withBorder inheritPadding py="xs" mt="md">
-        <Group justify="space-between">
-          <Group gap="md">
-            <ActionIcon
-              variant={post.is_liked ? 'filled' : 'light'}
-              color="cyan"
-              onClick={() => toggleLike()}
-              aria-label="Like"
-            >
-              <IconHeart size={18} />
-            </ActionIcon>
-            <Text size="sm">{post.likes_count}</Text>
-
-            <ActionIcon variant="light" color="cyan" aria-label="Comment">
-              <IconMessageCircle size={18} />
-            </ActionIcon>
-            <Text size="sm">{post.comments_count}</Text>
-
-            <ActionIcon variant="light" color="cyan" aria-label="Share">
-              <IconShare size={18} />
-            </ActionIcon>
-          </Group>
-        </Group>
-      </Card.Section>
-    </Card>
-  );
-}
--------------------------------
-src/widgets/post-card/PostCard.module.scss
-
-.card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 191, 255, 0.15);
-  }
-}
-
-.image {
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.95;
-  }
-}
-
 8️⃣ Главная страница с лентой
 -------------------------------
 src/app/page.tsx
@@ -596,7 +462,7 @@ export default function HomePage() {
   if (isLoading) {
     return (
       <Container size="md" py="xl">
-        <Loader size="xl" color="cyan" />
+        <Loader size="xl" color="violet" />
       </Container>
     );
   }
@@ -635,7 +501,7 @@ export default function HomePage() {
           onChange={setPage}
           total={data.meta.last_page}
           mt="xl"
-          color="cyan"
+          color="violet"
           withEdges
         />
       )}
@@ -685,91 +551,6 @@ export default function RootLayout({
     </html>
   );
 }
-
-🔟 Header
--------------------------------
-src/widgets/header/Header.tsx
-
-'use client';
-
-import {
-  AppShell,
-  Group,
-  Title,
-  Button,
-  Avatar,
-  Menu,
-  Text,
-} from '@mantine/core';
-import { IconLogout, IconUser, IconSettings } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
-
-export function SocialHeader() {
-  const router = useRouter();
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/login');
-  };
-
-  return (
-    <AppShell.Header>
-      <Group h="100%" px="md" justify="space-between">
-        <Group>
-          <Title order={3} c="cyan">
-            Social Network
-          </Title>
-        </Group>
-
-        <Group>
-          {token ? (
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <Button variant="light" color="cyan">
-                  <IconUser size={16} />
-                </Button>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconUser size={14} />}
-                  onClick={() => router.push('/profile')}
-                >
-                  Профиль
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconSettings size={14} />}
-                  onClick={() => router.push('/settings')}
-                >
-                  Настройки
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item
-                  leftSection={<IconLogout size={14} />}
-                  color="red"
-                  onClick={handleLogout}
-                >
-                  Выйти
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          ) : (
-            <>
-              <Button variant="light" color="cyan" onClick={() => router.push('/login')}>
-                Войти
-              </Button>
-              <Button color="cyan" onClick={() => router.push('/register')}>
-                Регистрация
-              </Button>
-            </>
-          )}
-        </Group>
-      </Group>
-    </AppShell.Header>
-  );
-}
-
 
 
 📁 2. API хуки для всех сущностей
@@ -1090,7 +871,7 @@ export function AppAvatar({ name, src, ...props }: AppAvatarProps) {
       src={src}
       alt={name || 'User'}
       radius="xl"
-      color="cyan"
+      color="violet"
       {...props}
     >
       {!src && <IconUser size={20} />}
@@ -1118,7 +899,7 @@ export function EmptyState({
   return (
     <Center py="xl">
       <Stack align="center" gap="md">
-        {icon || <IconInbox size={64} stroke={1.5} color="var(--mantine-color-cyan-5)" />}
+        {icon || <IconInbox size={64} stroke={1.5} color="var(--mantine-color-violet-5)" />}
         <Text size="lg" fw={500} ta="center">
           {title}
         </Text>
@@ -1144,7 +925,7 @@ export function Loading({ text = 'Загрузка...', size = 'xl' }: LoadingPr
   return (
     <Center py="xl">
       <Stack align="center" gap="md">
-        <Loader size={size} color="cyan" type="dots" />
+        <Loader size={size} color="violet" type="dots" />
         <Text size="sm" c="dimmed">
           {text}
         </Text>
@@ -1182,7 +963,7 @@ export function ErrorState({
           {description}
         </Text>
         {onRetry && (
-          <Button color="cyan" variant="light" onClick={onRetry}>
+          <Button color="violet" variant="light" onClick={onRetry}>
             Попробовать снова
           </Button>
         )}
@@ -1202,41 +983,44 @@ import { useCategories } from '@/entities/category/api/useCategories';
 import classes from './CategoryFilter.module.scss';
 
 interface CategoryFilterProps {
-  value?: number;
-  onChange: (value: number | undefined) => void;
-  className?: string;
+    value?: number;
+    onChange: (value: number | undefined) => void;
+    className?: string;
 }
 
 export function CategoryFilter({ value, onChange, className }: CategoryFilterProps) {
-  const { data: categories, isLoading } = useCategories();
+    const { data: categories, isLoading } = useCategories();
 
-  if (isLoading || !categories) return null;
+    if (isLoading || !categories) return null;
 
-  return (
-    <ScrollArea className={className}>
-      <Group gap="xs" wrap="nowrap">
-        <Chip
-          variant={value === undefined ? 'filled' : 'light'}
-          color="cyan"
-          onClick={() => onChange(undefined)}
-        >
-          Все
-        </Chip>
+    return (
+        <ScrollArea className={className}>
+            <Group gap="xs" wrap="nowrap">
+                <Chip
+                    checked={value === undefined}
+                    variant={value === undefined ? 'filled' : 'light'}
+                    color="violet"
+                    onClick={() => onChange(undefined)}
+                >
+                    Все
+                </Chip>
 
-                {categories.map((category) => (
-                    <Chip
+                {categories.map((category) => {
+                    const isSelected = value === Number(category.id);
+                    return <Chip
                         key={category.id}
+                        checked={isSelected}
                         variant={value === category.id ? 'filled' : 'light'}
-                        color="cyan"
-                        onClick={() => onChange(category.id === value ? undefined : category.id)}
+                        color="violet"
+                        onChange={() => onChange(isSelected ? undefined : Number(category.id))}
                     >
                         {category.icon && <span style={{ marginRight: 4 }}>{category.icon}</span>}
                         {category.name}
-                    </Chip>
-                ))}
-      </Group>
-    </ScrollArea>
-  );
+                    </Chip>;
+                })}
+            </Group>
+        </ScrollArea>
+    );
 }
 
 -------------------------------
@@ -1334,7 +1118,7 @@ export function CreatePostForm() {
       notifications.show({
         title: 'Успех',
         message: 'Пост успешно создан',
-        color: 'cyan',
+        color: 'violet',
       });
       router.push('/');
     } catch {
@@ -1421,7 +1205,7 @@ export function CreatePostForm() {
           <Group justify="flex-end" mt="md">
             <Button
               type="submit"
-              color="cyan"
+              color="violet"
               loading={createPost.isPending}
               leftSection={<IconSend size={16} />}
             >
@@ -1480,7 +1264,7 @@ export function LikeButton({ postId, isLiked, likesCount }: LikeButtonProps) {
     <Group gap="xs">
       <ActionIcon
         variant={isLiked ? 'filled' : 'light'}
-        color="cyan"
+        color="violet"
         onClick={() => toggleLike()}
         loading={isPending}
         aria-label="Like"
@@ -1562,7 +1346,7 @@ export function CommentForm({ postId, parentId, onSuccess, placeholder }: Commen
       <Group justify="flex-end" mt="sm">
         <Button
           type="submit"
-          color="cyan"
+          color="violet"
           size="sm"
           loading={createComment.isPending}
           leftSection={<IconSend size={14} />}
@@ -1609,7 +1393,7 @@ export function CommentItem({ comment, postId, currentUserId, depth = 0 }: Comme
   const [showReplyForm, setShowReplyForm] = useState(false);
   const deleteComment = useDeleteComment();
 
-  const isOwner = currentUserId === comment.user_id;
+    const isOwner = currentUserId === comment.user?.id;
   const maxDepth = 2;
   const isNested = depth > 0;
 
@@ -1636,19 +1420,21 @@ export function CommentItem({ comment, postId, currentUserId, depth = 0 }: Comme
           </Group>
 
           <Group gap="xs">
-            <Button
-              variant="subtle"
-              size="compact-xs"
-              color="cyan"
-              onClick={() => setShowReplyForm(!showReplyForm)}
-              leftSection={<IconMessageCircle size={14} />}
-            >
-              Ответить
-            </Button>
+                        {!isOwner && (
+                            <Button
+                                variant="subtle"
+                                size="compact-xs"
+                                color="violet"
+                                onClick={() => setShowReplyForm(!showReplyForm)}
+                                leftSection={<IconMessageCircle size={14} />}
+                            >
+                                Ответить
+                            </Button>
+                        )}
 
             {isOwner && (
               <>
-                <ActionIcon variant="light" color="cyan" size="sm">
+                <ActionIcon variant="light" color="violet" size="sm">
                   <IconEdit size={14} />
                 </ActionIcon>
                 <ActionIcon
@@ -1705,7 +1491,7 @@ src/features/post/comment/CommentItem.module.scss
 }
 
 .nested {
-  border-left: 3px solid var(--mantine-color-cyan-3);
+  border-left: 3px solid var(--mantine-color-violet-3);
 }
 
 📁 5. Виджеты
@@ -1715,14 +1501,14 @@ src/widgets/post-card/PostCard.tsx
 'use client';
 
 import {
-  Card,
-  Image,
-  Text,
-  Group,
-  ActionIcon,
-  Badge,
-  Stack,
-  Modal,
+    Card,
+    Image,
+    Text,
+    Group,
+    ActionIcon,
+    Badge,
+    Stack,
+    Modal,
 } from '@mantine/core';
 import { IconMessageCircle, IconShare } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -1730,105 +1516,105 @@ import { useRouter } from 'next/navigation';
 import { LikeButton } from '@/features/post/like/LikeButton';
 import { AppAvatar } from '@/shared/ui/Avatar/Avatar';
 import { formatDistanceToNow, formatNumber } from '@/shared/lib/format';
-import type { Post } from '@/shared/types/schema';
+import type { Post } from '@/shared/api/types/initial_schema';
 import classes from './PostCard.module.scss';
 
 interface PostCardProps {
-  post: Post;
+    post: Post;
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const router = useRouter();
-  const [fullImage, setFullImage] = useState<string | null>(null);
+    const router = useRouter();
+    const [fullImage, setFullImage] = useState<string | null>(null);
 
-  return (
-    <>
-      <Card className={classes.card} shadow="sm" padding="lg">
-        {post.preview_image && (
-          <Image
-            src={post.preview_image.preview_url}
-            alt={post.preview_image.alt_text || post.title}
-            height={300}
-            fit="cover"
-            radius="md"
-            className={classes.image}
-            onClick={() => setFullImage(post.preview_image!.full_url)}
-          />
-        )}
+    return (
+        <>
+            <Card className={classes.card} shadow="sm" padding="lg">
+                {post.preview_image && (
+                    <Image
+                        src={post.preview_image.preview_url}
+                        alt={post.preview_image.alt_text || post.title}
+                        height={300}
+                        fit="cover"
+                        radius="md"
+                        className={classes.image}
+                        onClick={() => setFullImage(post.preview_image!.full_url)}
+                    />
+                )}
 
-        <Card.Section withBorder inheritPadding py="xs">
-          <Group justify="space-between">
-            <Group gap="sm" onClick={() => router.push(`/users/${post.user_id}`)} style={{ cursor: 'pointer' }}>
-              <AppAvatar src={post.user?.avatar} name={post.user?.name} size="md" />
-              <div>
-                <Text size="sm" fw={500}>
-                  {post.user?.name}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {formatDistanceToNow(post.published_at || post.created_at)}
-                </Text>
-              </div>
-            </Group>
+                <Card.Section withBorder inheritPadding py="xs">
+                    <Group justify="space-between">
+                        <Group gap="sm" onClick={() => router.push(`/users/${post.user?.id}`)} style={{ cursor: 'pointer' }}>
+                            <AppAvatar src={post.user?.avatar} name={post.user?.name} size="md" />
+                            <div>
+                                <Text size="sm" fw={500}>
+                                    {post.user?.name}
+                                </Text>
+                                <Text size="xs" c="dimmed">
+                                    {formatDistanceToNow(post.published_at || post.created_at)}
+                                </Text>
+                            </div>
+                        </Group>
 
-            {post.category && (
-              <Badge
-                color="cyan"
-                variant="light"
-                leftSection={post.category.icon}
-              >
-                {post.category.name}
-              </Badge>
-            )}
-          </Group>
-        </Card.Section>
+                        {post.category && (
+                            <Badge
+                                color="violet"
+                                variant="light"
+                                leftSection={post.category.icon}
+                            >
+                                {post.category.name}
+                            </Badge>
+                        )}
+                    </Group>
+                </Card.Section>
 
-        <Stack gap="xs" mt="md" onClick={() => router.push(`/posts/${post.id}`)} style={{ cursor: 'pointer' }}>
-          <Text size="lg" fw={600}>
-            {post.title}
-          </Text>
+                <Stack gap="xs" mt="md" onClick={() => router.push(`/posts/${post.id}`)} style={{ cursor: 'pointer' }}>
+                    <Text size="lg" fw={600}>
+                        {post.title}
+                    </Text>
 
-          {post.content && (
-            <Text size="sm" c="dimmed" lineClamp={3}>
-              {post.content}
-            </Text>
-          )}
-        </Stack>
+                    {post.content && (
+                        <Text size="sm" c="dimmed" lineClamp={3}>
+                            {post.content}
+                        </Text>
+                    )}
+                </Stack>
 
-        <Card.Section withBorder inheritPadding py="xs" mt="md">
-          <Group justify="space-between">
-            <Group gap="md">
-              <LikeButton
-                postId={post.id}
-                isLiked={post.is_liked}
-                likesCount={post.likes_count}
-              />
+                <Card.Section withBorder inheritPadding py="xs" mt="md">
+                    <Group justify="space-between">
+                        <Group gap="md">
+                            <LikeButton
+                                postId={post.id}
+                                isLiked={post.is_liked}
+                                likesCount={post.likes_count}
+                            />
 
-              <Group gap="xs">
-                <ActionIcon variant="light" color="cyan" aria-label="Comment">
-                  <IconMessageCircle size={18} />
-                </ActionIcon>
-                <Text size="sm">{formatNumber(post.comments_count)}</Text>
-              </Group>
+                            <Group gap="xs">
+                                <ActionIcon variant="light" color="violet" aria-label="Comment">
+                                    <IconMessageCircle size={18} />
+                                </ActionIcon>
+                                <Text size="sm">{formatNumber(post.comments_count)}</Text>
+                            </Group>
 
-              <ActionIcon variant="light" color="cyan" aria-label="Share">
-                <IconShare size={18} />
-              </ActionIcon>
-            </Group>
-          </Group>
-        </Card.Section>
-      </Card>
+                            <ActionIcon variant="light" color="violet" aria-label="Share">
+                                <IconShare size={18} />
+                            </ActionIcon>
+                        </Group>
+                    </Group>
+                </Card.Section>
+            </Card>
 
-      <Modal
-        opened={!!fullImage}
-        onClose={() => setFullImage(null)}
-        size="xl"
-        centered
-        withCloseButton={false}
-      >
-        <Image src={fullImage} alt="" fit="contain" />
-      </Modal>
-    </>
-  );
+            <Modal
+                opened={!!fullImage}
+                onClose={() => setFullImage(null)}
+                size="xl"
+                centered
+                withCloseButton={false}
+            >
+                <Image src={fullImage} alt="" fit="contain" />
+            </Modal>
+        </>
+    );
 }
 
 -------------------------------
@@ -1863,12 +1649,13 @@ import {
     Button,
     Menu,
 } from '@mantine/core';
-import { IconLogout, IconUser, IconSettings } from '@tabler/icons-react';
+import { IconLogout, IconUser, IconSettings, IconPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import classes from './Header.module.scss';
 import { useAuthStore } from '@/entities/auth/model/store';
 import { useMutation } from '@tanstack/react-query';
 import { logoutRequest } from '@/shared/api/requests/user-request';
+import Link from 'next/link';
 
 export function Header() {
     const router = useRouter();
@@ -1891,49 +1678,60 @@ export function Header() {
         <header className={classes.header}>
             <Group h="100%" px="md" justify="space-between">
                 <Group>
-                    <Title order={3} c="cyan">
-                        Social Network
+                    <Title order={3} c="violet">
+                        SocialBook
                     </Title>
                 </Group>
 
                 <Group>
                     {token ? (
-                        <Menu shadow="md" width={200}>
-                            <Menu.Target>
-                                <Button variant="light" color="cyan">
-                                    <IconUser size={16} />
-                                </Button>
-                            </Menu.Target>
+                        <>
+                            <Button
+                                color="violet"
+                                leftSection={<IconPlus size={16} />}
+                                component={Link}
+                                href="/posts/create"
+                            >
+                                Создать пост
+                            </Button>
+                            <Menu shadow="md" width={200}>
+                                <Menu.Target>
+                                    <Button variant="light" color="violet">
+                                        <IconUser size={16} />
+                                    </Button>
+                                </Menu.Target>
 
-                            <Menu.Dropdown>
-                                <Menu.Item
-                                    leftSection={<IconUser size={14} />}
-                                    onClick={() => router.push('/profile')}
-                                >
-                                    Профиль
-                                </Menu.Item>
-                                <Menu.Item
-                                    leftSection={<IconSettings size={14} />}
-                                    onClick={() => router.push('/settings')}
-                                >
-                                    Настройки
-                                </Menu.Item>
-                                <Menu.Divider />
-                                <Menu.Item
-                                    leftSection={<IconLogout size={14} />}
-                                    color="red"
-                                    onClick={handleLogout}
-                                >
-                                    Выйти
-                                </Menu.Item>
-                            </Menu.Dropdown>
-                        </Menu>
+                                <Menu.Dropdown>
+                                    <Menu.Item
+                                        leftSection={<IconUser size={14} />}
+                                        onClick={() => router.push('/profile')}
+                                    >
+                                        Профиль
+                                    </Menu.Item>
+                                    <Menu.Item
+                                        leftSection={<IconSettings size={14} />}
+                                        onClick={() => router.push('/settings')}
+                                    >
+                                        Настройки
+                                    </Menu.Item>
+                                    <Menu.Divider />
+                                    <Menu.Item
+                                        leftSection={<IconLogout size={14} />}
+                                        color="red"
+                                        onClick={handleLogout}
+                                    >
+                                        Выйти
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
+                        </>
+
                     ) : (
                         <>
-                            <Button variant="light" color="cyan" onClick={() => router.push('/login')}>
+                            <Button variant="light" color="violet" onClick={() => router.push('/login')}>
                                 Войти
                             </Button>
-                            <Button color="cyan" onClick={() => router.push('/register')}>
+                            <Button color="violet" onClick={() => router.push('/register')}>
                                 Регистрация
                             </Button>
                         </>
@@ -1943,6 +1741,9 @@ export function Header() {
         </header>
     );
 }
+
+
+
 
 
 -------------------------------
@@ -1981,7 +1782,9 @@ export function Feed() {
         Лента постов
       </Title>
 
-      <CategoryFilter value={categoryId} onChange={setCategoryId} mb="xl" />
+            <div style={{ marginBottom: 'var(--mantine-spacing-xl)' }}>
+                <CategoryFilter value={categoryId} onChange={setCategoryId} />
+            </div>
 
       {!data?.data || data.data.length === 0 ? (
         <EmptyState
@@ -2002,7 +1805,7 @@ export function Feed() {
           onChange={setPage}
           total={data.meta.last_page}
           mt="xl"
-          color="cyan"
+          color="violet"
           withEdges
         />
       )}
@@ -2099,7 +1902,7 @@ export default function PostPage() {
             </Group>
 
             {post.category && (
-              <Badge color="cyan" variant="light" leftSection={post.category.icon}>
+              <Badge color="violet" variant="light" leftSection={post.category.icon}>
                 {post.category.name}
               </Badge>
             )}
@@ -2278,7 +2081,7 @@ export default function ProfilePage() {
       notifications.show({
         title: 'Успех',
         message: 'Профиль обновлён',
-        color: 'cyan',
+        color: 'violet',
       });
     } catch {
       notifications.show({
@@ -2303,7 +2106,7 @@ export default function ProfilePage() {
               src={user.avatar}
               size={120}
               radius="xl"
-              color="cyan"
+              color="violet"
               className={classes.avatar}
             >
               {!user.avatar && <IconCamera size={40} />}
@@ -2312,7 +2115,7 @@ export default function ProfilePage() {
             <Stack gap="xs" style={{ flex: 1 }}>
               <Title order={2}>{user.name}</Title>
               <Text c="dimmed">{user.email}</Text>
-              {user.city && <Badge color="cyan" variant="light">{user.city}</Badge>}
+              {user.city && <Badge color="violet" variant="light">{user.city}</Badge>}
               <Text size="sm" c="dimmed">
                 Регистрация: {formatDate(user.created_at)}
               </Text>
@@ -2365,7 +2168,7 @@ export default function ProfilePage() {
 
               <Button
                 type="submit"
-                color="cyan"
+                color="violet"
                 loading={updateProfile.isPending}
                 leftSection={<IconSave size={16} />}
               >
@@ -2384,7 +2187,7 @@ export default function ProfilePage() {
 src/app/profile/page.module.scss
 
 .avatar {
-  border: 3px solid var(--mantine-color-cyan-3);
+  border: 3px solid var(--mantine-color-violet-3);
   transition: transform 0.2s ease;
 
   &:hover {
@@ -2438,7 +2241,7 @@ export default function UserProfilePage() {
             src={user.avatar}
             size={120}
             radius="xl"
-            color="cyan"
+            color="violet"
             className={classes.avatar}
           />
 
@@ -2453,9 +2256,9 @@ export default function UserProfilePage() {
             )}
 
             <Group gap="sm" mt="sm">
-              {user.city && <Badge color="cyan" variant="light">{user.city}</Badge>}
+              {user.city && <Badge color="violet" variant="light">{user.city}</Badge>}
               {user.birth_date && (
-                <Badge color="cyan" variant="light">
+                <Badge color="violet" variant="light">
                   {formatDate(user.birth_date)}
                 </Badge>
               )}
@@ -2490,7 +2293,7 @@ export default function UserProfilePage() {
 src/app/users/[id]/page.module.scss
 
 .avatar {
-  border: 3px solid var(--mantine-color-cyan-3);
+  border: 3px solid var(--mantine-color-violet-3);
 }
 
 -------------------------------
@@ -2528,7 +2331,7 @@ export default function SettingsPage() {
         {/* Уведомления */}
         <Paper p="xl" radius="md" withBorder>
           <Group mb="md">
-            <IconBell size={24} color="var(--mantine-color-cyan-5)" />
+            <IconBell size={24} color="var(--mantine-color-violet-5)" />
             <Title order={3}>Уведомления</Title>
           </Group>
 
@@ -2541,7 +2344,7 @@ export default function SettingsPage() {
                 </Text>
               </div>
               <Switch
-                color="cyan"
+                color="violet"
                 checked={notificationsEnabled}
                 onChange={(event) => setNotificationsEnabled(event.currentTarget.checked)}
               />
@@ -2557,7 +2360,7 @@ export default function SettingsPage() {
                 </Text>
               </div>
               <Switch
-                color="cyan"
+                color="violet"
                 checked={emailNotifications}
                 onChange={(event) => setEmailNotifications(event.currentTarget.checked)}
               />
@@ -2568,7 +2371,7 @@ export default function SettingsPage() {
         {/* Внешний вид */}
         <Paper p="xl" radius="md" withBorder>
           <Group mb="md">
-            <IconPalette size={24} color="var(--mantine-color-cyan-5)" />
+            <IconPalette size={24} color="var(--mantine-color-violet-5)" />
             <Title order={3}>Внешний вид</Title>
           </Group>
 
@@ -2580,7 +2383,7 @@ export default function SettingsPage() {
               </Text>
             </div>
             <Switch
-              color="cyan"
+              color="violet"
               checked={darkMode}
               onChange={(event) => setDarkMode(event.currentTarget.checked)}
             />
@@ -2590,27 +2393,27 @@ export default function SettingsPage() {
         {/* Безопасность */}
         <Paper p="xl" radius="md" withBorder>
           <Group mb="md">
-            <IconShield size={24} color="var(--mantine-color-cyan-5)" />
+            <IconShield size={24} color="var(--mantine-color-violet-5)" />
             <Title order={3}>Безопасность</Title>
           </Group>
 
           <Stack gap="md">
-            <Button variant="light" color="cyan">
+            <Button variant="light" color="violet">
               Изменить пароль
             </Button>
-            <Button variant="light" color="cyan">
+            <Button variant="light" color="violet">
               Двухфакторная аутентификация
             </Button>
           </Stack>
         </Paper>
 
         <Button
-          color="cyan"
+          color="violet"
           onClick={() =>
             notifications.show({
               title: 'Успех',
               message: 'Настройки сохранены',
-              color: 'cyan',
+              color: 'violet',
             })
           }
         >
